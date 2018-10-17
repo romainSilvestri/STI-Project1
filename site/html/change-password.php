@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!isset($_SESSION['user_id'])){
+    header('Location: index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +45,8 @@
                 <label for="inputEmail">Enter your new password</label>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="login.html">Reset Password</a>
+            <input type="submit" class="btn btn-primary btn-block" href="#" value="Valider"/>
+            <a class="btn btn-primary btn-block" href="javascript:history.back()">Annuler</a>
           </form>
           <div class="text-center">
           </div>

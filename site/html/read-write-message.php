@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!isset($_SESSION['user_id'])){
+header('Location: index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,8 +54,10 @@
               <textarea class="form-control" rows="3"></textarea>
             </div>
           </div>
-
-          <a class="btn btn-primary btn-block" href="login.html">Ajouter</a>
+          <input type="submit" class="btn btn-primary btn-block" href="#" value="Valider"/>
+            <a class="btn btn-primary btn-block" href="#">Supprimer</a>
+            <a class="btn btn-primary btn-block" href="#">Répondre</a>
+          <a class="btn btn-primary btn-block" href="javascript:history.back()">Annuler</a>
         </form>
 
       </div>

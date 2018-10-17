@@ -33,12 +33,12 @@ function CreateTables()
                     time TEXT);");
 
         $file_db->exec("CREATE TABLE IF NOT EXISTS messageSent (
-                    from TEXT, 
-                    to TEXT,
-                    id INTEGER,
-                    FOREIGN KEY (from) REFERENCES users(login) ON DELETE CASCADE,
-                    FOREIGN KEY (to) REFERENCES users(login) ON DELETE CASCADE,
-                    FOREIGN KEY (time) REFERENCES message(time) ON DELETE CASCADE);");
+                    sender TEXT, 
+                    receiver TEXT,
+                    idMessage INTEGER,
+                    FOREIGN KEY (sender) REFERENCES users(login) ON DELETE CASCADE,
+                    FOREIGN KEY (receiver) REFERENCES users(login) ON DELETE CASCADE,
+                    FOREIGN KEY (idMessage) REFERENCES message(time) ON DELETE CASCADE);");
 
         // Close file db connection
         $file_db = null;
@@ -58,19 +58,11 @@ function ListMessage($user)
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $result = $file_db->query("SELECT * 
-                                                  FROM messages
+                                                  FROM  messages
                                                   INNER JOIN messageSent
-                                                    ON messages.id = messageSent.id
-                                                  WHERE to = $user
-                                                  ORDER BY messages.time;");
-
-        foreach ($result as $row) {
-            echo "Id: " . $row['id'] . "<br/>";
-            echo "Title: " . $row['title'] . "<br/>";
-            echo "Message: " . $row['message'] . "<br/>";
-            echo "Time: " . $row['time'] . "<br/>";
-            echo "<br/>";
-        }
+                                                    ON messages.id = messageSent.idMessage
+                                                  WHERE messageSent.sender LIKE '{$user}'
+                                                  ORDER BY messages.time ASC;");
 
         return $result;
 
@@ -78,7 +70,22 @@ function ListMessage($user)
         echo $e->getMessage();
     }
 }
+function ListUser()
+{
+    try {
+        // Create (connect to) SQLite database in file
+        $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
+        // Set errormode to exceptions
+        $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $result = $file_db->query("SELECT login, valid, role FROM users");
+
+        return $result;
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 function SendMessage($from, $to, $id, $title, $message, $time)
 {
     try {
@@ -178,10 +185,16 @@ function isUserValid($login, $password)
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $result = $file_db->query("SELECT *
-                                  FROM users 
-                                  WHERE users.login = '{$login}' AND users.password = '{$password}' AND users.valid = '1';");
-        return sizeof($result) > 0;
+        $result = $file_db->query("SELECT * FROM users 
+                                             WHERE users.login = '{$login}' AND users.password = '{$password}' AND users.valid = '1';");
+
+        foreach ($result as $row) {
+            if($row['login'] == $login){
+                return true;
+            }
+        }
+
+        return false;
 
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -197,10 +210,15 @@ function isAdmin($login)
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $result = $file_db->query("SELECT *
-                                  FROM users 
-                                  WHERE users.login = '{$login}' AND users.role == 'admin' AND users.valid = '1';");
-        return sizeof($result) > 0;
+        $result = $file_db->query("SELECT * FROM users 
+                                             WHERE users.role == '0' AND users.valid == '1';");
+        foreach ($result as $row) {
+            if($row['login'] == $login){
+                return true;
+            }
+        }
+
+        return false;
 
     } catch (PDOException $e) {
         echo $e->getMessage();

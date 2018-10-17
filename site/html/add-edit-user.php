@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
+    header('Location: 404.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,7 +77,8 @@
                 </div>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="login.html">Ajouter</a>
+            <a class="btn btn-primary btn-block" href="#">Ajouter</a>
+            <a class="btn btn-primary btn-block" href="admin.php">Retour</a>
           </form>
           
         </div>
