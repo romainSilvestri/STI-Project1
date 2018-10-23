@@ -58,9 +58,9 @@ if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
                 <div class="col-md-6">
                   <div class="form-label-group">
                       <select class="form-control">
-                          <option value="0">Type d'utilisateur :</option>
-                          <option value="1">Administrateur</option>
-                          <option value="2">Utilisateur</option>
+                          <option value="0">User privileges :</option>
+                          <option value="1">Admin</option>
+                          <option value="2">Standard</option>
                         </select>
                   </div>
                 </div>
@@ -70,15 +70,15 @@ if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
                     
                     <label>
                         <input type="checkbox" value="isValid">
-                        Le compte est actif
+                        Account is active
                       </label>
                     
                   </div>
                 </div>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="#">Ajouter</a>
-            <a class="btn btn-primary btn-block" href="admin.php">Retour</a>
+            <a class="btn btn-primary btn-block" href="#">Add</a>
+            <a class="btn btn-primary btn-block" href="admin.php">Cancel</a>
           </form>
           
         </div>

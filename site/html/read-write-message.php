@@ -32,19 +32,19 @@ header('Location: index.php');
 
   <div class="container">
     <div class="card card-register mx-auto mt-5">
-      <div class="card-header">Register an Account</div>
+      <div class="card-header">New message</div>
       <div class="card-body">
         <form>
           <div class="form-group">
             <div class="form-label-group">
-              <input type="text" id="to" class="form-control" placeholder="Destinataire" required="required" autofocus="autofocus">
-              <label for="to">Destinataire</label>
+              <input type="text" id="to" class="form-control" placeholder="Recipient" required="required" autofocus="autofocus">
+              <label for="to">Recipient</label>
             </div>
           </div>
           <div class="form-group">
             <div class="form-label-group">
-              <input type="text" id="subject" class="form-control" placeholder="Sujet" required="required">
-              <label for="subject">Sujet</label>
+              <input type="text" id="subject" class="form-control" placeholder="Subject" required="required">
+              <label for="subject">Subject</label>
             </div>
           </div>
 
@@ -54,10 +54,10 @@ header('Location: index.php');
               <textarea class="form-control" rows="3"></textarea>
             </div>
           </div>
-          <input type="submit" class="btn btn-primary btn-block" href="#" value="Valider"/>
-            <a class="btn btn-primary btn-block" href="#">Supprimer</a>
-            <a class="btn btn-primary btn-block" href="#">Répondre</a>
-          <a class="btn btn-primary btn-block" href="javascript:history.back()">Annuler</a>
+          <input type="submit" class="btn btn-primary btn-block" href="#" value="Submit"/>
+            <a class="btn btn-primary btn-block" href="#">Delete</a>
+            <a class="btn btn-primary btn-block" href="#">Answer</a>
+          <a class="btn btn-primary btn-block" href="javascript:history.back()">Cancel</a>
         </form>
 
       </div>

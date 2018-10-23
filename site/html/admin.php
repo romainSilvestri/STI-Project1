@@ -38,7 +38,7 @@ $data = ListUser();
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="view.php">Boite de réception</a>
+      <a class="navbar-brand mr-1" href="view.php">Mailbox</a>
 
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
@@ -49,9 +49,9 @@ $data = ListUser();
             
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-            <a class="dropdown-item" href="read-write-message.php">Nouveau</a>
+            <a class="dropdown-item" href="read-write-message.php">New</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="view.php">Lecture</a>
+            <a class="dropdown-item" href="view.php">Mailbox</a>
           </div>
         </li>
 
@@ -62,7 +62,7 @@ $data = ListUser();
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
              <a class="dropdown-item" href="admin.php">Administration</a>
              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="add-edit-user.php">Nouvel utilisateur</a>
+              <a class="dropdown-item" href="add-edit-user.php">New user</a>
               <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="change-password.php">Reset Password</a>
             <div class="dropdown-divider"></div>
@@ -91,20 +91,20 @@ $data = ListUser();
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Nom d'utilisateur</th>
+                      <th>Username</th>
                       <th>Role</th>
-                      <th>Actif</th>
-                      <th>Supprimer</th>
-                      <th>Éditer</th>
+                      <th>Active</th>
+                      <th>Delete</th>
+                      <th>Edit</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                        <th>Nom d'utilisateur</th>
+                        <th>Username</th>
                         <th>Role</th>
-                        <th>Actif</th>
-                        <th>Supprimer</th>
-                        <th>Éditer</th>
+                        <th>Active</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -113,10 +113,10 @@ $data = ListUser();
                   foreach ($data as $row) {
                       echo('<tr>');
                       echo "<td>" . $row['login'] . "</td>";
-                      echo "<td>" . ($row['role'] == 0 ? "admin":"utilisateur"). "</td>";
-                      echo "<td>" . ($row['valid'] == 1 ? "oui" : "non") . "</td>";
-                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Supprimer</a></td>');
-                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Éditer</a></td>');
+                      echo "<td>" . ($row['role'] == 0 ? "Admin":"User"). "</td>";
+                      echo "<td>" . ($row['valid'] == 1 ? "Yes" : "No") . "</td>";
+                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Delete</a></td>');
+                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Edit</a></td>');
                       echo "<tr/>";
                   }
                   ?>

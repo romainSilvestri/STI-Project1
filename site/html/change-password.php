@@ -45,8 +45,8 @@ if(!isset($_SESSION['user_id'])){
                 <label for="inputEmail">Enter your new password</label>
               </div>
             </div>
-            <input type="submit" class="btn btn-primary btn-block" href="#" value="Valider"/>
-            <a class="btn btn-primary btn-block" href="javascript:history.back()">Annuler</a>
+            <input type="submit" class="btn btn-primary btn-block" href="#" value="Confirm"/>
+            <a class="btn btn-primary btn-block" href="javascript:history.back()">Cancel</a>
           </form>
           <div class="text-center">
           </div>
