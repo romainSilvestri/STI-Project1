@@ -49,7 +49,7 @@ $data = ListMessage($_SESSION['username']);
 
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-                <a class="dropdown-item" href="read-write-message.php">New</a>
+                <a class="dropdown-item" href="read-write-message.php?type=new">New</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="view.php">Mailbox</a>
             </div>
@@ -125,11 +125,11 @@ $data = ListMessage($_SESSION['username']);
                                     <td><?php echo($row['receiver']) ?></td>
                                     <td><?php echo($row['title']) ?></td>
                                     <td><a class="dropdown-item"
-                                           href="read-write-message.php?title=<?php echo($row['title']) ?>">Answer</a>
+                                           href="read-write-message.php?type=answer&title=<?php echo($row['title']) ?>">Answer</a>
                                     </td>
                                     <td><a class="dropdown-item" href="delete-message.php?id=<?php echo($row['id']) ?>">Delete</a>
                                     </td>
-                                    <td><a class="dropdown-item" href="read-write-message.php">Details</a></td>
+                                    <td><a class="dropdown-item" href="read-write-message.php?type=details&id=<?php echo($row['id'])?>">Details</a></td>
                                 <tr/>
                             <?php }
                             ?>

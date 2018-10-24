@@ -3,7 +3,16 @@ session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
 }
-$title= $_GET['title'];
+
+$type = $_GET['type'];
+
+if ($type == 'details') {
+    $id = $_GET['id'];
+}
+
+if ($type == 'answer') {
+    $title = $_GET['title'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
