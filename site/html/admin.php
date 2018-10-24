@@ -109,17 +109,20 @@ $data = ListUser();
                   </tfoot>
                   <tbody>
 
+
+
                   <?php
-                  foreach ($data as $row) {
-                      echo('<tr>');
-                      echo "<td>" . $row['login'] . "</td>";
-                      echo "<td>" . ($row['role'] == 0 ? "Admin":"User"). "</td>";
-                      echo "<td>" . ($row['valid'] == 1 ? "Yes" : "No") . "</td>";
-                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Delete</a></td>');
-                      echo('<td><a class="dropdown-item" href="add-edit-user.php">Edit</a></td>');
-                      echo "<tr/>";
-                  }
+                  foreach ($data as $row) {  ?>
+                      <tr>
+                      <td><?php echo($row['login']) ?></td>;
+                      <td><?php echo($row['role'] == 0 ? "Admin":"User")?> </td>
+                      <td><?php echo($row['valid'] == 1 ? "Yes" : "No")?> </td>
+                      <td><a class="dropdown-item" href="delete-user.php?id=<?php echo($row['login'])?>">Delete</a></td>
+                      <td><a class="dropdown-item" href="add-edit-user.php">Edit</a></td>
+                      <tr/>
+                  <?php }
                   ?>
+
                    
                   </tbody>
                 </table>

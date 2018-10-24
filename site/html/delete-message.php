@@ -1,7 +1,11 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Romain
- * Date: 23.10.2018
- * Time: 07:00
- */
+session_start();
+
+if(!isset($_SESSION['user_id'])){
+    header('Location: 404.php');
+}
+
+$id = $_GET['id'];
+echo($id);
+?>
+

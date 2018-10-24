@@ -33,7 +33,7 @@ if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
 
     <div class="container">
       <div class="card card-register mx-auto mt-5">
-        <div class="card-header">Register an Account</div>
+        <div class="card-header">Register/Edit an Account</div>
         <div class="card-body">
           <form >
             <div class="form-group">

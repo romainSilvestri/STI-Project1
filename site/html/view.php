@@ -117,18 +117,18 @@ $data = ListMessage($_SESSION['username']);
                             </tfoot>
                             <tbody>
 
+
                             <?php
-                            foreach ($data as $row) {
-                                echo('<tr>');
-                                echo "<td>" . $row['time'] . "</td>";
-                                echo "<td>" . $row['receiver'] . "</td>";
-                                echo "<td>" . $row['title'] . "</td>";
-                                echo('<td><a class="dropdown-item" href="read-write-message.php">Answer</a></td>');
-                                echo('<td><a class="dropdown-item" href="#">Delete</a></td>');
-                                echo('<td><a class="dropdown-item" href="read-write-message.php">Details</a></td>');
-                                echo "<tr/>";
-                            }
-                            ?>
+                            foreach ($data as $row) { ?>
+                                <tr>
+                                    <td><?php echo($row['time']) ?></td>
+                                    <td><?php echo($row['receiver']) ?></td>
+                                    <td><?php echo($row['title']) ?></td>
+                                    <td><a class="dropdown-item" href="read-write-message.php">Answer</a></td>
+                                    <td><a class="dropdown-item" href="delete-message.php?id=<?php echo($row['id'])?>">Delete</a></td>
+                                    <td><a class="dropdown-item" href="read-write-message.php">Details</a></td>
+                                <tr/>
+                            <?php } ?>
 
                             </tbody>
                         </table>
