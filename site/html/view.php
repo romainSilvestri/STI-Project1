@@ -124,11 +124,15 @@ $data = ListMessage($_SESSION['username']);
                                     <td><?php echo($row['time']) ?></td>
                                     <td><?php echo($row['receiver']) ?></td>
                                     <td><?php echo($row['title']) ?></td>
-                                    <td><a class="dropdown-item" href="read-write-message.php">Answer</a></td>
-                                    <td><a class="dropdown-item" href="delete-message.php?id=<?php echo($row['id'])?>">Delete</a></td>
+                                    <td><a class="dropdown-item"
+                                           href="read-write-message.php?title=<?php echo($row['title']) ?>">Answer</a>
+                                    </td>
+                                    <td><a class="dropdown-item" href="delete-message.php?id=<?php echo($row['id']) ?>">Delete</a>
+                                    </td>
                                     <td><a class="dropdown-item" href="read-write-message.php">Details</a></td>
                                 <tr/>
-                            <?php } ?>
+                            <?php }
+                            ?>
 
                             </tbody>
                         </table>
