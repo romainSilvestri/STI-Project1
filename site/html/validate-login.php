@@ -1,6 +1,4 @@
 <?php
-print_r($_POST);
-
 
 include 'database/database.php';
 

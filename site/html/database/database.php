@@ -61,8 +61,8 @@ function ListMessage($user)
                                                   FROM  messages
                                                   INNER JOIN messageSent
                                                     ON messages.id = messageSent.idMessage
-                                                  WHERE messageSent.sender LIKE '{$user}'
-                                                  ORDER BY messages.time ASC;");
+                                                  WHERE messageSent.receiver LIKE '{$user}'
+                                                  ORDER BY messages.time DESC ;");
 
         return $result;
 
@@ -86,7 +86,23 @@ function ListUser()
         echo $e->getMessage();
     }
 }
-function SendMessage($from, $to, $id, $title, $message, $time)
+function GetUserInfo($login)
+{
+    try {
+        // Create (connect to) SQLite database in file
+        $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
+        // Set errormode to exceptions
+        $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $result = $file_db->query("SELECT login, valid, role, password FROM users WHERE login LIKE '{$login}'");
+
+        return $result;
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+function SendMessage($from, $to, $title, $message, $time)
 {
     try {
         // Create (connect to) SQLite database in file
@@ -95,10 +111,34 @@ function SendMessage($from, $to, $id, $title, $message, $time)
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $formatted_time = date('Y-m-d H:i:s', $time);
-        $file_db->exec("INSERT INTO messages (id, title, message, time) 
-                VALUES ('{$id}', '{$title}', '{$message}', '{$formatted_time}');");
-        $file_db->exec("INSERT INTO messageSent (from, to, id) 
+
+        $result = $file_db->query("SELECT max(id) FROM messages;");
+
+
+        foreach ($result as $row){
+            $id= $row['max(id)'] + 1;
+        }
+
+        $file_db->exec("INSERT INTO messages (id, title, message, time)
+                VALUES ('{$id}','{$title}', '{$message}', '{$formatted_time}');");
+
+        $file_db->exec("INSERT INTO messageSent (sender, receiver, idMessage)
                 VALUES ('{$from}', '{$to}', '{$id}');");
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+function DeleteMessage($id)
+{
+    try {
+        // Create (connect to) SQLite database in file
+        $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
+        // Set errormode to exceptions
+        $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+        $file_db->exec("DELETE FROM messages WHERE id = '{$id}';");
 
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -111,15 +151,16 @@ function ChangePassword($user, $newPassword)
         // Create (connect to) SQLite database in file
         $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
         // Set errormode to exceptions
-        $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        //$file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $file_db->exec("UPDATE users 
-                                  SET users.password = '{$newPassword}'
-                                  WHERE users.login = '{$user}';");
+        $stmt = $file_db->prepare('UPDATE users SET password = :newPassword WHERE login = :userId');
+        $stmt->execute(array('newPassword'=>$newPassword,'userId'=>$user));
 
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
+
+
 }
 
 
@@ -140,7 +181,7 @@ function AddUser($login, $password, $valid, $role)
     }
 }
 
-function EditUser($login, $password, $valid, $role)
+function EditUser($login, $valid, $role)
 {
     try {
         // Create (connect to) SQLite database in file
@@ -148,16 +189,13 @@ function EditUser($login, $password, $valid, $role)
         // Set errormode to exceptions
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-        $file_db->exec("UPDATE users
-                                  SET users.password = '{$password}', users.valid = '{$valid}', users.role = '{$role}'
-                                  WHERE users.login = '{$login}';");
+        $stmt = $file_db->prepare('UPDATE users SET valid = :newValid, role = :newRole WHERE login = :userId');
+        $stmt->execute(array('newValid'=>$valid,'newRole'=>$role, 'userId'=>$login));
 
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
 }
-
 
 function DeleteUser($login)
 {
@@ -169,7 +207,7 @@ function DeleteUser($login)
 
 
         $file_db->exec("DELETE FROM users 
-                                  WHERE users.login = '{$login}';");
+                                  WHERE login = '{$login}';");
 
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -186,7 +224,7 @@ function isUserValid($login, $password)
 
 
         $result = $file_db->query("SELECT * FROM users 
-                                             WHERE users.login = '{$login}' AND users.password = '{$password}' AND users.valid = '1';");
+                                             WHERE login = '{$login}' AND password = '{$password}' AND valid = '1';");
 
         foreach ($result as $row) {
             if($row['login'] == $login){
@@ -211,7 +249,7 @@ function isAdmin($login)
 
 
         $result = $file_db->query("SELECT * FROM users 
-                                             WHERE users.role == '0' AND users.valid == '1';");
+                                             WHERE role == '0' AND valid == '1';");
         foreach ($result as $row) {
             if($row['login'] == $login){
                 return true;

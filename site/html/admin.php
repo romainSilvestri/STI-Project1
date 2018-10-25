@@ -83,9 +83,6 @@ $data = ListUser();
 
           <!-- DataTables Example -->
           <div class="card mb-3">
-            <div class="card-header">
-              <i class="fas fa-table"></i>
-              Data Table Example</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -96,6 +93,7 @@ $data = ListUser();
                       <th>Active</th>
                       <th>Delete</th>
                       <th>Edit</th>
+                      <th>Change Password</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -105,6 +103,7 @@ $data = ListUser();
                         <th>Active</th>
                         <th>Delete</th>
                         <th>Edit</th>
+                        <th>Change Password</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -116,9 +115,10 @@ $data = ListUser();
                           <td><?php echo($row['login']) ?></td>
                           <td><?php echo($row['role'] == 0 ? "Admin" : "User") ?> </td>
                           <td><?php echo($row['valid'] == 1 ? "Yes" : "No") ?> </td>
-                          <td><a class="dropdown-item" href="delete-user.php?id=<?php echo($row['login']) ?>">Delete</a>
+                          <td><a class="dropdown-item" href="validate-delete-user.php?id=<?php echo($row['login']) ?>">Delete</a>
                           </td>
-                          <td><a class="dropdown-item" href="add-edit-user.php">Edit</a></td>
+                          <td><a class="dropdown-item" href="add-edit-user.php?type=Edit&id=<?php echo($row['login']) ?>">Edit</a></td>
+                          <td><a class="dropdown-item" href="add-edit-user.php?type=Password&id=<?php echo($row['login']) ?>">Change</a></td>
                       <tr/>
                   <?php }
                   ?>

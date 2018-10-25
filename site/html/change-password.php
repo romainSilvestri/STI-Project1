@@ -38,14 +38,14 @@ if(!isset($_SESSION['user_id'])){
             <h4>Reset your password?</h4>
             <p>Enter your new password and we will change it for you.</p>
           </div>
-          <form>
+          <form method="post" action="validate-change-password.php">
             <div class="form-group">
               <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Enter email address" required="required" autofocus="autofocus">
+                <input name="newPassword" type="text" id="inputEmail" class="form-control" placeholder="Enter email address" required="required" autofocus="autofocus">
                 <label for="inputEmail">Enter your new password</label>
               </div>
             </div>
-            <input type="submit" class="btn btn-primary btn-block" href="#" value="Confirm"/>
+            <input type="submit" class="btn btn-primary btn-block" value="Confirm"/>
             <a class="btn btn-primary btn-block" href="javascript:history.back()">Cancel</a>
           </form>
           <div class="text-center">

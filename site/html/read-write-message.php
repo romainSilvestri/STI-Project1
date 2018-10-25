@@ -5,14 +5,25 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $type = $_GET['type'];
-
-if ($type == 'details') {
-    $id = $_GET['id'];
+$id = $_GET['id'];
+$receiver="";
+$subject="";
+$content="";
+$time = $formatted_time = date('Y-m-d H:i:s', time());
+include_once "database/database.php";
+$r = ListMessage($_SESSION['username']);
+foreach ($r as $m){
+    if($m['id'] == $id){
+        $receiver = $m['sender'];
+        $subject = $m['title'];
+        $content = $m['message'];
+        $time = $m['time'];
+    }
+}
+if($type == "Answer"){
+    $subject = "RE:".$subject;
 }
 
-if ($type == 'answer') {
-    $title = $_GET['title'];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,19 +53,35 @@ if ($type == 'answer') {
 
 <div class="container">
     <div class="card card-register mx-auto mt-5">
-        <div class="card-header">New message</div>
+        <div class="card-header">
+            <?php
+            if($type == "New"){     echo "New message"; }
+            if($type == "Details"){ echo "Details";     }
+            if($type == "Answer"){  echo "Answer";      }
+            ?>
+        </div>
         <div class="card-body">
-            <form>
+            <form method="post" action="validate-message.php?type=<?php echo $type?>">
+                <?php
+                if($type == "Details"){
+                ?>
                 <div class="form-group">
                     <div class="form-label-group">
-                        <input type="text" id="to" class="form-control" placeholder="Recipient" required="required"
-                               autofocus="autofocus">
+                        <input name="time" type="text" id="time" class="form-control" placeholder="Reception date" disabled value="<?php echo $time?>">
+                        <label for="to">Reception date</label>
+                    </div>
+                </div>
+                <?php } ?>
+                <div class="form-group">
+                    <div class="form-label-group">
+                        <input name="to" type="text" id="to" class="form-control" placeholder="Recipient" required="required"
+                               autofocus="autofocus" value="<?php echo $receiver?>">
                         <label for="to">Recipient</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-label-group">
-                        <input type="text" id="subject" class="form-control" placeholder="Subject" required="required">
+                        <input name="subject" type="text" id="subject" class="form-control" placeholder="Subject" required="required" value="<?php echo $subject?>">
                         <label for="subject">Subject</label>
                     </div>
                 </div>
@@ -62,13 +89,25 @@ if ($type == 'answer') {
                 <div class="form-group">
                     <label>Message :</label>
                     <div class="form-label-group">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea name="content" class="form-control" rows="3" ><?php echo $content?></textarea>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-primary btn-block" href="#" value="Submit"/>
-                <a class="btn btn-primary btn-block" href="#">Delete</a>
-                <a class="btn btn-primary btn-block" href="#">Answer</a>
-                <a class="btn btn-primary btn-block" href="javascript:history.back()">Cancel</a>
+                <?php
+                if($type == "New" OR $type == "Answer"){
+                ?>
+                <input type="submit" class="btn btn-primary btn-block" value="Confirm"/>
+                    <?php
+                }
+                ?>
+                <?php
+                    if($type == "Details"){
+                ?>
+                        <a class="btn btn-primary btn-block" href="validate-delete-message.php?id=<?php echo $id ?>">Delete</a>
+                        <a class="btn btn-primary btn-block" href="read-write-message.php?type=Answer&id=<?php echo $id ?>">Answer</a>
+                <?php
+                    }
+                ?>
+                <a class="btn btn-primary btn-block" href="view.php">Cancel</a>
             </form>
 
         </div>

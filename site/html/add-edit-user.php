@@ -1,9 +1,20 @@
 <?php
 session_start();
-
 if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
     header('Location: 404.php');
 }
+$type = "Add";
+if(isset($_GET['type'])){
+    $type = $_GET['type'];
+    include_once "database/database.php";
+    $userInfo = GetUserInfo($_GET['id']);
+    foreach ($userInfo as $u){
+        $login = $u['login'];
+        $privilege = $u['role'];
+        $isActive = $u['valid'];
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,52 +44,134 @@ if(!isset($_SESSION['user_id']) or $_SESSION['user_id'] != 0){
 
     <div class="container">
       <div class="card card-register mx-auto mt-5">
-        <div class="card-header">Register/Edit an Account</div>
+        <div class="card-header">
+            <?php
+            if($type == "Edit") {
+                echo "Edit an Account";
+            }
+            if($type == "Add"){
+                echo "Register an Account";
+            }
+            if($type == "Password"){
+                echo "Update Password";
+            } ?>
+        </div>
         <div class="card-body">
-          <form >
-            <div class="form-group">
-              <div class="form-row">
-                <div class="col-md-6">
-                  <div class="form-label-group">
-                    <input type="text" id="login" class="form-control" placeholder="First name" required="required" autofocus="autofocus">
-                    <label for="login">Login</label>
+          <form method="post" action="validate-user.php?type=<?php echo $type?>">
+
+              <?php
+              if($type == "Add"){
+                  ?>
+                  <div class="form-group">
+                      <div class="form-row">
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input name="login" type="text" id="login" class="form-control" placeholder="First name" required="required" autofocus="autofocus">
+                                  <label for="login">Login</label>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input name="password" type="password" id="password" class="form-control" placeholder="Password" required="required" value="">
+                                  <label for="password">Password</label>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-label-group">
-                    <input type="password" id="password" class="form-control" placeholder="Password" required="required">
-                    <label for="password">Password</label>
+                  <div class="form-group">
+                      <div class="form-row">
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <select name="userPrivileges" id="userPrivileges" class="form-control">
+                                      <option value="0">User privileges :</option>
+                                      <option value="1">Admin</option>
+                                      <option value="2">Standard</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+
+
+                                  <label>
+                                      <input name="isValid" id="isValid" type="checkbox" value="1">
+                                      Account is active
+                                  </label>
+
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <div class="form-row">
-                <div class="col-md-6">
-                  <div class="form-label-group">
-                      <select class="form-control">
-                          <option value="0">User privileges :</option>
-                          <option value="1">Admin</option>
-                          <option value="2">Standard</option>
-                        </select>
+                  <input type="submit" class="btn btn-primary btn-block" value="Validate"/>
+                  <a class="btn btn-primary btn-block" href="admin.php">Cancel</a>
+                  <?php
+              }
+              if($type == "Edit"){
+                  ?>
+                  <div class="form-group">
+                      <div class="form-row">
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input name="login" type="text" id="login" class="form-control" placeholder="First name" required="required" autofocus="autofocus" value="<?php echo $_GET['id']?>">
+                                  <label for="login">Login</label>
+                              </div>
+                          </div>
+
+                      </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-label-group">
-                    
-                    
-                    <label>
-                        <input type="checkbox" value="isValid">
-                        Account is active
-                      </label>
-                    
+                  <div class="form-group">
+                      <div class="form-row">
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <select name="userPrivileges" id="userPrivileges" class="form-control">
+                                      <option value="0">User privileges :</option>
+                                      <option value="1" <?php echo $privilege==0?'selected':'' ?>>Admin</option>
+                                      <option value="2" <?php echo $privilege==1?'selected':'' ?>>Standard</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <label>
+                                      <input name="isValid" id="isValid" type="checkbox" value="1" <?php echo $isActive ? "checked" : ""  ?>>
+                                      Account is active
+                                  </label>
+
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <a class="btn btn-primary btn-block" href="#">Add</a>
-            <a class="btn btn-primary btn-block" href="admin.php">Cancel</a>
+                  <input type="submit" class="btn btn-primary btn-block" value="Validate"/>
+                  <a class="btn btn-primary btn-block" href="admin.php">Cancel</a>
+              <?php
+              }
+              if($type == "Password"){
+                  ?>
+                  <div class="form-group">
+                      <div class="form-row">
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input name="login" type="text" id="login" class="form-control" placeholder="First name" required="required" autofocus="autofocus" value="<?php echo $login?>">
+                                  <label for="login">Login</label>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input name="password" type="password" id="password" class="form-control" placeholder="Password" required="required" value="">
+                                  <label for="password">Password</label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <input type="submit" class="btn btn-primary btn-block" value="Validate"/>
+                  <a class="btn btn-primary btn-block" href="admin.php">Cancel</a>
+                  <?php
+              }
+              ?>
+
+
+
           </form>
           
         </div>

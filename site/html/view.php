@@ -1,7 +1,9 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
+
 }
 include_once("database/database.php");
 $data = ListMessage($_SESSION['username']);
@@ -49,7 +51,7 @@ $data = ListMessage($_SESSION['username']);
 
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-                <a class="dropdown-item" href="read-write-message.php?type=new">New</a>
+                <a class="dropdown-item" href="read-write-message.php?type=New">New</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="view.php">Mailbox</a>
             </div>
@@ -62,7 +64,7 @@ $data = ListMessage($_SESSION['username']);
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <?php
-                if ($_POST['userid'] == 0) {
+                if ($_SESSION['user_id'] == 0) {
                     echo('<a class="dropdown-item" href="admin.php">Administration</a>');
                     echo('<div class="dropdown-divider"></div>');
                     echo('<a class="dropdown-item" href="add-edit-user.php">New user</a>');
@@ -88,10 +90,7 @@ $data = ListMessage($_SESSION['username']);
 
             <!-- DataTables Example -->
             <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fas fa-table"></i>
-                    Data Table Example
-                </div>
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -122,14 +121,14 @@ $data = ListMessage($_SESSION['username']);
                             foreach ($data as $row) { ?>
                                 <tr>
                                     <td><?php echo($row['time']) ?></td>
-                                    <td><?php echo($row['receiver']) ?></td>
+                                    <td><?php echo($row['sender']) ?></td>
                                     <td><?php echo($row['title']) ?></td>
                                     <td><a class="dropdown-item"
-                                           href="read-write-message.php?type=answer&title=<?php echo($row['title']) ?>">Answer</a>
+                                           href="read-write-message.php?type=Answer&id=<?php echo($row['id']) ?>">Answer</a>
                                     </td>
-                                    <td><a class="dropdown-item" href="delete-message.php?id=<?php echo($row['id']) ?>">Delete</a>
+                                    <td><a class="dropdown-item" href="validate-delete-message.php?id=<?php echo($row['id']) ?>">Delete</a>
                                     </td>
-                                    <td><a class="dropdown-item" href="read-write-message.php?type=details&id=<?php echo($row['id'])?>">Details</a></td>
+                                    <td><a class="dropdown-item" href="read-write-message.php?type=Details&id=<?php echo($row['id'])?>">Details</a></td>
                                 <tr/>
                             <?php }
                             ?>
