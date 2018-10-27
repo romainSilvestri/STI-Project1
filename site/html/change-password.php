@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_id'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Forgot Password</title>
+    <title>Reset Password</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
